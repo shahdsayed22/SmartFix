@@ -1,0 +1,39 @@
+{
+    "project_info": {
+        "project_number": "770688265663",
+        "project_id": "smartfix-469cd",
+        "storage_bucket": "smartfix-469cd.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:770688265663:android:4e59c2475ab5341b54450a",
+                "android_client_info": {
+                    "package_name": "com.smartfix.smart_fix"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "770688265663-nsl1k4rvh4aed5m0bdi4ral23f99a7t8.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAwx6A5ByB-WcjTXfdayF4WGbK6R09oM3k"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "770688265663-nsl1k4rvh4aed5m0bdi4ral23f99a7t8.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

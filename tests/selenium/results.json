@@ -1,0 +1,109 @@
+{
+  "env": {
+    "base": "http://localhost:3000",
+    "run": "20260618-075122",
+    "browser": "chrome",
+    "browserVersion": "149.0.7827.155",
+    "chromedriverVersion": "149.0.7827.155",
+    "selenium": "4.43.0",
+    "platform": "linux",
+    "startedAt": "2026-06-18T07:51:22.793502+00:00"
+  },
+  "summary": {
+    "passed": 10,
+    "total": 10
+  },
+  "cases": [
+    {
+      "id": "SEL-01",
+      "route": "/",
+      "description": "Dashboard KPI cards + charts mount",
+      "status": "PASS",
+      "detail": "8 KPI cards (8 numeric), 6 charts mounted",
+      "screenshot": "screenshots/SEL-01_dashboard.png",
+      "duration_s": 23.32
+    },
+    {
+      "id": "SEL-02",
+      "route": "/issues",
+      "description": "Create issue then filter by category",
+      "status": "PASS",
+      "detail": "row created & visible=True, survives category filter=True, persists on reload=True",
+      "screenshot": "screenshots/SEL-02_issue_created_filtered.png",
+      "duration_s": 7.13
+    },
+    {
+      "id": "SEL-03",
+      "route": "/issues",
+      "description": "Reject invalid status transition (assigned w/o technician)",
+      "status": "PASS",
+      "detail": "rejection alert shown: 'Cannot set status to \"assigned\" without an assigned technician.'",
+      "screenshot": "screenshots/SEL-03_status_rejected.png",
+      "duration_s": 4.52
+    },
+    {
+      "id": "SEL-04",
+      "route": "/users",
+      "description": "Search, role filter, verification persists",
+      "status": "PASS",
+      "detail": "rows 8->1 on search, match found=True, verification False->True persisted=True",
+      "screenshot": "screenshots/SEL-04_users_search.png",
+      "duration_s": 3.91
+    },
+    {
+      "id": "SEL-05",
+      "route": "/technicians",
+      "description": "City filter + edit rating persists",
+      "status": "PASS",
+      "detail": "city filter -> 8 rows; rating 4.4->3.3 (target 3.3) persisted=True",
+      "screenshot": "screenshots/SEL-05_technicians_filtered.png",
+      "duration_s": 6.25
+    },
+    {
+      "id": "SEL-06",
+      "route": "/payments",
+      "description": "Invoice breakdown (base, fee, VAT, total)",
+      "status": "PASS",
+      "detail": "1 invoice rows; modal shows base=True, fee=True, vat=True, total=True",
+      "screenshot": "screenshots/SEL-06_invoice.png",
+      "duration_s": 2.21
+    },
+    {
+      "id": "SEL-07",
+      "route": "/tickets",
+      "description": "Post ticket reply, persists on reload",
+      "status": "PASS",
+      "detail": "reply appended=True, persists on reload=True",
+      "screenshot": "screenshots/SEL-07_ticket_reply.png",
+      "duration_s": 5.91
+    },
+    {
+      "id": "SEL-08",
+      "route": "/settings",
+      "description": "Commission fee/VAT round-trip",
+      "status": "PASS",
+      "detail": "commission round-trip: fee=13 vat=15 changed=True",
+      "screenshot": "screenshots/SEL-08_settings_saved.png",
+      "duration_s": 3.02
+    },
+    {
+      "id": "SEL-09",
+      "route": "/ai-insights",
+      "description": "Insight cards render without console errors",
+      "status": "PASS",
+      "detail": "9 insight cards; 0 severe console errors",
+      "screenshot": "screenshots/SEL-09_ai_insights.png",
+      "duration_s": 2.85
+    },
+    {
+      "id": "SEL-10",
+      "route": "/health",
+      "description": "Health metric tiles render",
+      "status": "PASS",
+      "detail": "12 metric tiles rendered (12 with values)",
+      "screenshot": "screenshots/SEL-10_health.png",
+      "duration_s": 1.48
+    }
+  ],
+  "finishedAt": "2026-06-18T07:52:24.170924+00:00"
+}

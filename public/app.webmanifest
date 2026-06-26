@@ -1,0 +1,20 @@
+{
+    "name": "SmartFix — صيانة منزلية",
+    "short_name": "SmartFix",
+    "description": "منصّة خدمات الصيانة المنزلية الموثوقة — احجز فنيًا، تابع طلبك، وادفع بأمان.",
+    "start_url": "/launch?role=customer&utm_source=pwa",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#14323B",
+    "background_color": "#0b1117",
+    "lang": "ar",
+    "dir": "rtl",
+    "categories": ["lifestyle", "utilities"],
+    "icons": [
+        { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+        { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+        { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+        { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    ]
+}

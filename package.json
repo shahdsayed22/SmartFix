@@ -1,0 +1,31 @@
+{
+  "name": "smartfix-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "ai": "^6.0.208",
+    "dotenv": "^17.2.4",
+    "lucide-react": "^0.563.0",
+    "mongoose": "^9.2.0",
+    "next": "16.1.6",
+    "puppeteer-core": "^24.37.5",
+    "qrcode.react": "^4.2.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "recharts": "^3.7.0",
+    "workflow": "^4.2.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "firebase-admin": "^14.0.0"
+  }
+}

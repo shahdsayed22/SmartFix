@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#14323B">
+<title>SmartFix · كيفية التثبيت والاستخدام</title>
+<style>
+  :root{
+    --navy:#14323B; --primary:#185B56; --teal:#1C8C8C; --gold:#D98E2B;
+    --bg:#F4F7F7; --surface:#FFFFFF; --ink:#16242A; --muted:#6B7B82;
+    --line:#E2EAEA; --ok:#2E7D44; --shadow:0 10px 30px rgba(10,35,42,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI","Helvetica Neue",system-ui,Tahoma,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.7;
+    padding-bottom:48px;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 18px}
+
+  /* Hero */
+  header.hero{
+    background:linear-gradient(135deg,#14323B 0%,#185B56 55%,#1C8C8C 100%);
+    color:#fff;padding:38px 0 64px;text-align:center;position:relative;overflow:hidden;
+  }
+  header.hero .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.08;background:#fff}
+  .brand{display:inline-flex;align-items:center;gap:12px;margin-bottom:14px}
+  .logo{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.12);
+    display:grid;place-items:center;border:1px solid rgba(255,255,255,.25)}
+  .logo svg{width:30px;height:30px}
+  .wordmark{font-size:30px;font-weight:800;letter-spacing:-.5px;direction:ltr}
+  .wordmark .fix{color:var(--gold)}
+  header.hero h1{font-size:22px;font-weight:800;margin-top:6px}
+  header.hero p{opacity:.85;font-size:15px;margin-top:6px}
+
+  /* Cards lifted over hero */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;
+    box-shadow:var(--shadow);padding:22px;margin-top:-40px}
+  .section{margin-top:30px}
+  .section h2{font-size:18px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .step-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;
+    display:grid;place-items:center;font-size:15px;font-weight:800;flex:none}
+  .lead{color:var(--muted);font-size:14.5px;margin-bottom:16px}
+
+  .note{background:#EAF4F2;border:1px solid #CDE6E1;border-radius:14px;padding:12px 16px;
+    font-size:13.5px;color:#1d4b46;display:flex;gap:10px;align-items:flex-start}
+  .note .i{flex:none;font-size:17px}
+
+  /* Role cards */
+  .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .role{border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;background:#fff;
+    display:flex;flex-direction:column;align-items:center;transition:transform .15s,box-shadow .15s}
+  .role:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .role .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:24px;margin-bottom:8px}
+  .role.cust .ic{background:#DAEFEE;color:var(--teal)}
+  .role.tech .ic{background:#FBEFDB;color:#B97714}
+  .role.adm .ic{background:#E9ECF3;color:#3a4a6b}
+  .role h3{font-size:16px;font-weight:800;color:var(--navy)}
+  .role .sub{font-size:12.5px;color:var(--muted);min-height:34px;margin:2px 0 10px}
+  .role img.qr{width:128px;height:128px;border-radius:10px;border:1px solid var(--line);background:#fff;padding:6px}
+  .role .url{font-size:11px;color:var(--muted);direction:ltr;word-break:break-all;margin:8px 0 10px;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .btn{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;
+    font-size:14px;padding:9px 20px;border-radius:12px;transition:background .15s}
+  .btn:hover{background:#0E2A31}
+  .btn.gold{background:var(--gold)} .btn.gold:hover{background:#B97714}
+
+  /* Platform tabs */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 16px;font-size:14px;
+    font-weight:700;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tab svg{width:17px;height:17px}
+  .pane{display:none}
+  .pane.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  ol.steps{list-style:none;counter-reset:s;display:grid;gap:12px}
+  ol.steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:14px 16px 14px 16px;display:flex;gap:14px;align-items:flex-start}
+  ol.steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;
+    background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+  ol.steps b{color:var(--navy)}
+  .glyph{display:inline-flex;vertical-align:middle;width:20px;height:20px;margin:0 3px}
+  .glyph svg{width:100%;height:100%}
+
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:6px}
+  .feat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:13.5px}
+  .feat .e{font-size:20px}
+  .feat b{color:var(--navy);display:block;margin:4px 0 2px}
+
+  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:34px;line-height:1.9}
+  footer .gold{color:var(--gold);font-weight:700}
+  .pill{display:inline-block;background:#E6F3EB;color:var(--ok);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="blob" style="width:220px;height:220px;top:-60px;right:-40px"></div>
+  <div class="blob" style="width:180px;height:180px;bottom:-70px;left:-30px;background:#D98E2B;opacity:.1"></div>
+  <div class="wrap">
+    <div class="brand">
+      <span class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#D98E2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.1-.6-.6-2.1z"/>
+        </svg>
+      </span>
+      <span class="wordmark">Smart<span class="fix">Fix</span></span>
+    </div>
+    <h1>كيفية تثبيت واستخدام التطبيق</h1>
+    <p>تطبيق ويب تقدّمي (PWA) — يعمل على آيفون وأندرويد والكمبيوتر، بدون متجر تطبيقات</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="panel">
+    <div class="note">
+      <span class="i">📶</span>
+      <div><b>قبل أن تبدأ:</b> تأكّد أن جهازك متصل بنفس شبكة الـ Wi‑Fi الخاصة بجهاز العرض (اللابتوب).
+      هذا تطبيق تجريبي يعمل عبر الشبكة المحلية.</div>
+    </div>
+  </div>
+
+  <!-- STEP 1: choose role -->
+  <section class="section">
+    <h2><span class="step-num">1</span> اختر دورك وافتح التطبيق</h2>
+    <p class="lead">امسح رمز الـ QR بكاميرا هاتفك، أو اضغط زر «افتح» إن كنت تتصفّح من نفس الجهاز.</p>
+    <div class="roles">
+      <div class="role cust">
+        <div class="ic">👤</div>
+        <h3>عميل</h3>
+        <div class="sub">اطلب خدمة صيانة وتابع حالة طلبك وادفع</div>
+        <img class="qr" src="qr/customer.png" alt="QR عميل">
+        <div class="url" data-role="customer"></div>
+        <a class="btn" data-role="customer" href="#">افتح كعميل</a>
+      </div>
+      <div class="role tech">
+        <div class="ic">🔧</div>
+        <h3>فنّي</h3>
+        <div class="sub">استقبل الأعمال القريبة وقدّم عروض الأسعار</div>
+        <img class="qr" src="qr/technician.png" alt="QR فنّي">
+        <div class="url" data-role="technician"></div>
+        <a class="btn gold" data-role="technician" href="#">افتح كفنّي</a>
+      </div>
+      <div class="role adm">
+        <div class="ic">🛠️</div>
+        <h3>مشرف (لوحة التحكم)</h3>
+        <div class="sub">إدارة الطلبات والمدفوعات والفنيين والتحليلات</div>
+        <img class="qr" src="qr/admin.png" alt="QR المشرف">
+        <div class="url" data-role="admin"></div>
+        <a class="btn" data-role="admin" href="#">افتح لوحة التحكم</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: install per platform -->
+  <section class="section">
+    <h2><span class="step-num">2</span> ثبّت التطبيق على جهازك</h2>
+    <p class="lead">بعد فتح التطبيق، أضِفه إلى الشاشة الرئيسية ليعمل كتطبيق مستقل بملء الشاشة. اختر نظامك:</p>
+
+    <div class="tabs" id="tabs">
+      <button class="tab" data-os="ios">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.4.7-3 .7s-1.6-.7-2.6-.7c-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2 2.5 2s1.4-.6 2.6-.6 1.5.6 2.6.6 1.7-1 2.4-2c.7-1.1 1-2.1 1-2.2-.1 0-2-1-2-3.3zM14.6 5.8c.5-.7.9-1.6.8-2.6-.8 0-1.8.6-2.4 1.3-.5.6-1 1.6-.8 2.5.9.1 1.8-.5 2.4-1.2z"/></svg>
+        آيفون / آيباد (Safari)
+      </button>
+      <button class="tab" data-os="android">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.2 16.3a1 1 0 0 1-1-1V9.4a1 1 0 1 1 2 0v5.9a1 1 0 0 1-1 1zm9.6 0a1 1 0 0 1-1-1V9.4a1 1 0 1 1 2 0v5.9a1 1 0 0 1-1 1zM5 9.3a1 1 0 0 0-1 1v5.2a1 1 0 1 0 2 0v-5.2a1 1 0 0 0-1-1zm14 0a1 1 0 0 0-1 1v5.2a1 1 0 1 0 2 0v-5.2a1 1 0 0 0-1-1zM8.3 17a1 1 0 0 0 1 1h.4v2.2a1 1 0 1 0 2 0V18h.6v2.2a1 1 0 1 0 2 0V18h.4a1 1 0 0 0 1-1V9.6H8.3V17zm7.3-9.4a4 4 0 0 0-1.7-2.4l.8-1.4a.4.4 0 1 0-.7-.4l-.8 1.5a4.6 4.6 0 0 0-3.8 0L8.8 3.4a.4.4 0 1 0-.7.4l.8 1.4a4 4 0 0 0-1.7 2.4h8.4zm-5.7-1a.6.6 0 1 1 0-1.2.6.6 0 0 1 0 1.2zm4 0a.6.6 0 1 1 0-1.2.6.6 0 0 1 0 1.2z"/></svg>
+        أندرويد (Chrome)
+      </button>
+      <button class="tab" data-os="desktop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+        كمبيوتر (Chrome / Edge)
+      </button>
+    </div>
+
+    <div class="pane" data-os="ios">
+      <ol class="steps">
+        <li>افتح رابط دورك في متصفّح <b>Safari</b> (يجب أن يكون Safari تحديدًا على آيفون/آيباد).</li>
+        <li>اضغط زر <b>المشاركة</b>
+          <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#185B56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M8 8l4-4 4 4M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></svg></span>
+          في شريط الأدوات بأسفل الشاشة.</li>
+        <li>مرّر للأسفل واختر <b>«إضافة إلى الشاشة الرئيسية» (Add to Home Screen)</b>.</li>
+        <li>اضغط <b>«إضافة» (Add)</b> — ستظهر أيقونة <b>SmartFix</b> على شاشتك الرئيسية.</li>
+        <li>افتح التطبيق من الأيقونة ليعمل بملء الشاشة كتطبيق مستقل.</li>
+      </ol>
+    </div>
+
+    <div class="pane" data-os="android">
+      <ol class="steps">
+        <li>افتح رابط دورك في متصفّح <b>Chrome</b>.</li>
+        <li>قد يظهر شريط <b>«تثبيت التطبيق»</b> تلقائيًا بالأسفل — اضغطه. أو:</li>
+        <li>اضغط قائمة الثلاث نقاط <b>⋮</b> أعلى يمين المتصفّح.</li>
+        <li>اختر <b>«تثبيت التطبيق» (Install app)</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.</li>
+        <li>أكّد التثبيت — ستظهر أيقونة <b>SmartFix</b> في قائمة تطبيقاتك.</li>
+      </ol>
+    </div>
+
+    <div class="pane" data-os="desktop">
+      <ol class="steps">
+        <li>افتح رابط دورك (أو لوحة التحكم) في <b>Chrome</b> أو <b>Edge</b>.</li>
+        <li>اضغط أيقونة التثبيت
+          <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#185B56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></span>
+          الظاهرة في نهاية شريط العنوان.</li>
+        <li>أو من القائمة <b>⋮</b> اختر <b>«تثبيت SmartFix…» (Install SmartFix)</b>.</li>
+        <li>سيُفتح التطبيق في نافذته الخاصة ويُضاف لقائمة التطبيقات / سطح المكتب.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Good to know -->
+  <section class="section">
+    <h2><span class="step-num">★</span> معلومات مفيدة</h2>
+    <div class="features">
+      <div class="feat"><span class="e">🔓</span><b>بدون تسجيل دخول</b>الوضع التجريبي يفتح حسب الدور مباشرةً.</div>
+      <div class="feat"><span class="e">🗄️</span><b>بيانات حيّة</b>كل الأدوار تقرأ وتكتب على نفس قاعدة بيانات لوحة التحكم.</div>
+      <div class="feat"><span class="e">🌙</span><b>عربي بالكامل</b>واجهة من اليمين لليسار (RTL) أولاً.</div>
+      <div class="feat"><span class="e">📲</span><b>يعمل كتطبيق</b>بملء الشاشة بأيقونة على جهازك بعد التثبيت.</div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="pill">SmartFix — مشروع تخرّج</span><br>
+    جامعة أكتوبر للعلوم الحديثة والآداب · <span class="gold">برنامج هندسة البرمجيات © 2026</span><br>
+    <span id="hostline" style="opacity:.7"></span>
+  </footer>
+
+</div>
+
+<script>
+  // Build per-role links from the host actually serving this page, so buttons
+  // work no matter the LAN IP. QR images are pre-generated for the demo network.
+  var host = location.hostname || '192.168.1.35';
+  var WEB_PORT = 8090;     // Flutter Web PWA (customer + technician)
+  var ADMIN_PORT = 3000;   // Next.js dashboard PWA (admin)
+  var urls = {
+    customer:   'http://' + host + ':' + WEB_PORT + '/?role=customer',
+    technician: 'http://' + host + ':' + WEB_PORT + '/?role=technician',
+    admin:      'http://' + host + ':' + ADMIN_PORT + '/'
+  };
+  document.querySelectorAll('a.btn[data-role]').forEach(function(a){ a.href = urls[a.dataset.role]; });
+  document.querySelectorAll('.url[data-role]').forEach(function(d){ d.textContent = urls[d.dataset.role]; });
+  document.getElementById('hostline').textContent = 'العنوان الحالي: ' + host;
+
+  // Platform tabs with auto-detect.
+  var tabs = document.querySelectorAll('.tab');
+  var panes = document.querySelectorAll('.pane');
+  function show(os){
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.os === os); });
+    panes.forEach(function(p){ p.classList.toggle('active', p.dataset.os === os); });
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.os); }); });
+  var ua = navigator.userAgent || '';
+  var os = /iPhone|iPad|iPod/i.test(ua) ? 'ios' : /Android/i.test(ua) ? 'android' : 'desktop';
+  show(os);
+</script>
+</body>
+</html>

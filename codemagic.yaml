@@ -1,0 +1,135 @@
+# Codemagic CI/CD for SmartFix (Flutter app at repo root)
+# ---------------------------------------------------------------------------
+# Two workflows:
+#   • android-workflow — builds a release APK (debug-signed, installs directly
+#     on any phone) and emails it to you.
+#   • ios-workflow     — builds the iOS app WITHOUT code signing (verifies it
+#     compiles + produces a .app artifact). A truly installable .ipa / TestFlight
+#     build needs an Apple Developer account + signing identities configured in
+#     Codemagic → Teams → Code signing identities (see notes at the bottom).
+#
+# The app talks to the deployed API (https://smartfix-six.vercel.app/api) by
+# default — no --dart-define needed. To point a CI build at a different API,
+# add: --dart-define=API_BASE=https://your-host/api  to the build command.
+#
+# Pin: Flutter 3.41.5 (matches local). Change `flutter:` to `stable` to float.
+# ---------------------------------------------------------------------------
+
+workflows:
+  android-workflow:
+    name: SmartFix Android (APK)
+    instance_type: linux_x2
+    max_build_duration: 60
+    environment:
+      flutter: 3.41.5
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.gradle/caches
+        - $HOME/.pub-cache
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Flutter version
+        script: flutter --version
+      - name: Get packages
+        script: flutter pub get
+      - name: Analyze (non-blocking)
+        script: flutter analyze || true
+      - name: Build release APK
+        # Release APK is debug-signed via android/app/build.gradle.kts — installs
+        # directly on a device. Add --split-per-abi for smaller per-arch APKs.
+        script: flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - team@example.com
+        notify:
+          success: true
+          failure: true
+
+  ios-workflow:
+    name: SmartFix iOS (TestFlight)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment:
+      flutter: 3.41.5
+      xcode: latest
+      cocoapods: default
+      # Automatic code signing via an App Store Connect API key.
+      # 1. Codemagic → Teams → Integrations → App Store Connect: add your key.
+      # 2. Put the integration's name below (replace SmartFix_ASC_API_KEY).
+      # 3. Create the app in App Store Connect with bundle id com.smartfix.smartFix.
+      integrations:
+        app_store_connect: SmartFix_ASC_API_KEY
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.smartfix.smartFix
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/Library/Caches/CocoaPods
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Flutter version
+        script: flutter --version
+      - name: Get packages
+        script: flutter pub get
+      - name: Pod install
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Apply signing profiles
+        # Fetches the provisioning profiles for the bundle id (set up via the
+        # integration above) and writes $HOME/export_options.plist.
+        script: xcode-project use-profiles
+      - name: Build signed IPA for TestFlight
+        # --build-number uses Codemagic's monotonically increasing counter so
+        # TestFlight never rejects a duplicate build number.
+        script: |
+          flutter build ipa --release \
+            --build-number=$PROJECT_BUILD_NUMBER \
+            --export-options-plist=$HOME/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - team@example.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        # Uses the same App Store Connect integration named above.
+        auth: integration
+        submit_to_testflight: true
+
+# ---------------------------------------------------------------------------
+# iOS / TestFlight prerequisites (one-time, in the Codemagic + Apple UIs):
+#   1. Codemagic → Teams → Integrations → App Store Connect: add an API key,
+#      then put its NAME in `integrations.app_store_connect` above (currently
+#      the placeholder SmartFix_ASC_API_KEY).
+#   2. App Store Connect → create the app with bundle id com.smartfix.smartFix.
+#   3. First TestFlight upload of a brand-new app sometimes needs the app's
+#      "Export Compliance" answered once in App Store Connect.
+#   4. (Optional) Add Firebase iOS config ios/Runner/GoogleService-Info.plist —
+#      currently MISSING, so iOS runs with Firebase disabled (handled gracefully
+#      by the try/catch in lib/main.dart). Add it to enable iOS push/auth.
+#
+# For a Play Store upload from Android, add a real release keystore
+# (Codemagic → env group) + a google_play publishing block.
+# ---------------------------------------------------------------------------
